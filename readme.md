@@ -1,12 +1,41 @@
 # real-time-web-project
+The `#`finder. With this app you can search on hashtags.  
+New twitter posts will be send realtime to the client.  
 
-This repo will hold the project you're going to build during the last two weeks of RTW. It functions as a way to show you've attained the following learning goals of this course:
+# Table of Content
+- [Getting started](#getting-started)
+- [Features](#features)
+- [Used technology](#used-technology)
+- [External datasource](#external-data-source)
+- [Database](#database-system)
+- [Checklist](#checklist)
+- [License](#license)
 
-* Build a Node Web App which consumes an external data source through an API and serves a frontend using routing and templating techniques.
-* Create a "live" web app which reflects changes to the back-end data model in reactive front-end views, using real-time, event-based, messaging technologies like sockets or server-sent-events.
-* Describe their work in a professional readme with insightful diagrams showing the life cycle of their data.
 
-<!-- ☝️ replace this description -->
+# Getting Started
+How to get started with this project:
+
+1. Clone the repo with `git clone https://github.com/Sam-Guliker/real-time-web-project` or download it from github
+2. Run `npm install` or `yarn` to install the dependencies
+3. Run `npm start` to start the server
+4. Go to [http://localhost:3000/](http://localhost:3000/)
+
+
+# Features
+The following is possible with this application:
+
+- Chat with other people in the chatroom
+- Use your voice instead of typing to communicate.
+
+# External data source
+Twitter API
+
+# Database system
+
+# Checklist
+- [ ] researching graphQL
+
+# License
 
 <!-- Add a nice image here at the end of the week, showing off your shiny frontend 📸 -->
 
