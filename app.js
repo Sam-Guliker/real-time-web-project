@@ -4,7 +4,7 @@ const bodyParser       = require('body-parser')
 const pug              = require('pug')
 const fs               = require('fs')
 const TwitterStream    = require('twitter-stream-api')
-
+const session          = require('express-session')
 const mongoose         = require('mongoose')
 
 const user             = require('./modal/user')
@@ -16,8 +16,6 @@ db.on("error", console.error.bind(console, "connection error"));
 db.once("open", function(callback) {
   console.log("Connection succeeded.");
 });
-
-
 
 // var pad = "./tweets.json"
 // console.log(pad)
@@ -34,7 +32,7 @@ var app                = require('express')()
 //     token_secret :    "80lMXcIUwKjGpx1lh1nSUmxX51ibSpMXXj7a4xg8eFGeO"
 // };
 //
-// var Twitter = new TwitterStream(keys, false);
+// var Twitter = new TwitterStream(keys, true);
 //
 // Twitter.stream('statuses/filter', {
 //     follow: '25073877'
@@ -49,6 +47,12 @@ app.set('view engine', 'pug');
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
+}))
+
+app.use(express.session({
+  secret: 'topsecret',
+  maxAge: new Date(Date.now() + 3600000),
+  store: new mongoStore({ db: mongoose.connections[0].db })
 }));
 
 app.use(express.static(path.join(__dirname, 'public')));
@@ -87,7 +91,7 @@ app.post('/register', (req, res) => {
     if (err) throw err;
     else{
       console.log('User created!');
-      res.render('register')  
+      res.render('register')
     }
   })
 
@@ -102,7 +106,16 @@ app.post('/register', (req, res) => {
 
 app.post('/login', (req, res) => {
   title='hashFinder'
-  User.findOne()
+  user.findOne({
+    username: req.body.username,
+    password: req.body.password },
+
+    (err, result) => {
+    if (err) console.log( err );
+
+    console.log(result);
+    res.render('test')
+  })
   // db.collection.findById(id, function(err, user){
   //   if(err) return console.log(err)
   //   res.status(200)
