@@ -4,10 +4,12 @@ const bodyParser       = require('body-parser')
 const pug              = require('pug')
 const fs               = require('fs')
 const TwitterStream    = require('twitter-stream-api')
-const session          = require('express-session')
+// const session          = require('express-session')
 const mongoose         = require('mongoose')
+const env              = require('dotenv').config()
 
 const user             = require('./modal/user')
+// const example          = require('./example-tweet')
 
 mongoose.connect('mongodb://localhost/test')
 const db = mongoose.connection
@@ -17,24 +19,41 @@ db.once("open", function(callback) {
   console.log("Connection succeeded.");
 });
 
-
 var app                = require('express')()
 
-console.log(json)
-
 var keys = {
-    consumer_key :    "7xgFu3HR9I5pySXRPX7Kdu0zd",
-    consumer_secret : "PD9BohkITKJFkk8ZJgATqtkbW2MI1jtweweflpkoRn6Cj6BG8n",
-    token :           "908293305947054080-CYKlCAhGUBoyUI3yGfJGXMQhSyNmQ8H",
-    token_secret :    "80lMXcIUwKjGpx1lh1nSUmxX51ibSpMXXj7a4xg8eFGeO"
+    consumer_key :    process.env.consumer_key,
+    consumer_secret : process.env.consumer_secret,
+    token :           process.env.token,
+    token_secret :    process.env.token_secret
 };
 
 var Twitter = new TwitterStream(keys, true);
 
 Twitter.stream('statuses/filter', {
-    filter: 'javascript'
+    track: 'javascript',
+    stall_warnings: true
 })
 
+Twitter.on('connection success', function (uri) {
+    console.log('connection success', uri);
+});
+
+Twitter.on('connection aborted', function () {
+    console.log('connection aborted');
+});
+
+Twitter.on('connection error network', function (error) {
+    console.log('connection error network', error);
+});
+
+Twitter.on('data', function (obj) {
+    console.log('data', obj);
+});
+
+Twitter.on('data error', function (error) {
+    console.log('data error', error);
+});
 
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -44,11 +63,11 @@ app.use(bodyParser.urlencoded({
   extended: true
 }))
 
-app.use(express.session({
-  secret: 'topsecret',
-  maxAge: new Date(Date.now() + 3600000),
-  store: new mongoStore({ db: mongoose.connections[0].db })
-}));
+// app.use(express.session({
+//   secret: 'topsecret',
+//   maxAge: new Date(Date.now() + 3600000),
+//   store: new mongoStore({ db: mongoose.connections[0].db })
+// }));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -103,17 +122,17 @@ app.post('/register', (req, res) => {
 
 app.post('/login', (req, res) => {
   title='hashFinder'
-  user.findOne({
-        username: req.body.username,
-        password: req.body.password
-    },
+  // user.findOne({
+  //       username: req.body.username,
+  //       password: req.body.password
+  //   },
+  //
+  //   (err, result) => {
+  //   if (err) console.log( err );
 
-    (err, result) => {
-    if (err) console.log( err );
-
-    console.log(result);
+    // console.log(result)
     res.render('finder')
-  })
+  // })
 })
 
 app.listen(3000, () => console.log('Listening on 3000.'))
