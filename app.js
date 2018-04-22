@@ -17,28 +17,23 @@ db.once("open", function(callback) {
   console.log("Connection succeeded.");
 });
 
-// var pad = "./tweets.json"
-// console.log(pad)
 
 var app                = require('express')()
-// var json =             require(pad)
-//
-// console.log(json)
-//
-// var keys = {
-//     consumer_key :    "7xgFu3HR9I5pySXRPX7Kdu0zd",
-//     consumer_secret : "PD9BohkITKJFkk8ZJgATqtkbW2MI1jtweweflpkoRn6Cj6BG8n",
-//     token :           "908293305947054080-CYKlCAhGUBoyUI3yGfJGXMQhSyNmQ8H",
-//     token_secret :    "80lMXcIUwKjGpx1lh1nSUmxX51ibSpMXXj7a4xg8eFGeO"
-// };
-//
-// var Twitter = new TwitterStream(keys, true);
-//
-// Twitter.stream('statuses/filter', {
-//     follow: '25073877'
-// });
 
-// Twitter.pipe(fs.createWriteStream('tweets.json'));
+console.log(json)
+
+var keys = {
+    consumer_key :    "7xgFu3HR9I5pySXRPX7Kdu0zd",
+    consumer_secret : "PD9BohkITKJFkk8ZJgATqtkbW2MI1jtweweflpkoRn6Cj6BG8n",
+    token :           "908293305947054080-CYKlCAhGUBoyUI3yGfJGXMQhSyNmQ8H",
+    token_secret :    "80lMXcIUwKjGpx1lh1nSUmxX51ibSpMXXj7a4xg8eFGeO"
+};
+
+var Twitter = new TwitterStream(keys, true);
+
+Twitter.stream('statuses/filter', {
+    filter: 'javascript'
+})
 
 
 app.set('views', path.join(__dirname, 'views'));
@@ -65,21 +60,23 @@ app.use(function(err, req, res, next) {
 
 // App gets.
 app.get('/', (req, res) => {
-  title='hashFinder'
   res.status(200)
   res.render('login')
 })
 
 app.get('/login', (req, res) => {
-  title='hashFinder'
   res.status(200)
   res.render('login')
 })
 
 app.get('/register', (req, res) => {
-  title='Register'
   res.status(200)
   res.render('register')
+})
+
+app.get('/finder', (req, res) => {
+  res.status(200)
+  res.render('finder')
 })
 
 // App post.
@@ -107,20 +104,16 @@ app.post('/register', (req, res) => {
 app.post('/login', (req, res) => {
   title='hashFinder'
   user.findOne({
-    username: req.body.username,
-    password: req.body.password },
+        username: req.body.username,
+        password: req.body.password
+    },
 
     (err, result) => {
     if (err) console.log( err );
 
     console.log(result);
-    res.render('test')
+    res.render('finder')
   })
-  // db.collection.findById(id, function(err, user){
-  //   if(err) return console.log(err)
-  //   res.status(200)
-  //   res.render('test')
-  // })
 })
 
 app.listen(3000, () => console.log('Listening on 3000.'))
