@@ -5,6 +5,20 @@
   font-family: 'Noto Sans', sans-serif;
 }
 
+body {
+  display: flex;
+  flex-direction: column;
+}
+div {
+
+}
+main {
+  margin: auto;
+  width: 40vw;
+}
+label {
+  display: block;
+}
 form {
   max-width: 30em;
   display: flex;
@@ -15,13 +29,22 @@ form {
 input {
   padding: 1em;
 }
+
+input[name="hashtag"] {
+  width: 100%;
+  /* background: #2e2e2e; */
+  color: #2e2e2e;
+  padding: 2em;
+  border: 1px solid black;
+  border-radius: 3em;
+}
+
 label {
   padding: 1em 0;
 }
-button {
+input[type="submit"] {
   margin-top: 1em;
-  padding: 1em;
+  color: #2e2e2e;
+  margin-left: -65px;
   border: none;
-  background: #2e2e2e;
-  color: #fff;
 }
