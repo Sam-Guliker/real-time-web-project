@@ -33,9 +33,7 @@ I'm using the twitter-stream-api to get the data flow going.
 Server-side:
 ```
 io.on('connection', function(socket) {
-  console.log( 'connection socket' )
   socket.on('search', function(data) {
-    console.log(data)
     var trackedData = data
     Twitter.stream('statuses/filter', {
           track: trackedData,
@@ -75,6 +73,10 @@ Client-side:
 # Database system
 I'm using [mongoDB](https://www.mongodb.com/) to save user data.
 
+set-up:
+
+![schema](schema.png)
+
 # Checklist
 `This` contains what I've done for this project and what I still have to do.
 - [x] MongoDB set-up
@@ -85,6 +87,7 @@ I'm using [mongoDB](https://www.mongodb.com/) to save user data.
 - [ ] Saving data in an array
  filter it out
 - [ ] show the tweets on screen.
+- [ ] adding ID's to sockets.
 
 
 # License
