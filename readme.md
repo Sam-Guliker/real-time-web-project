@@ -1,4 +1,4 @@
-# real-time-web-project
+# Real-time-web-project
 The `#`finder. With this app you can search on hashtags.  
 New twitter posts will be send realtime to the client.  
 
@@ -20,20 +20,72 @@ How to get started with this project:
 3. Run `npm start` to start the server
 4. Go to [http://localhost:3000/](http://localhost:3000/)
 
-
 # Features
 The following is possible with this application:
-
-- Chat with other people in the chatroom
-- Use your voice instead of typing to communicate.
+- Register as an user
+- Searching for tweets that got some kind of hashtag in it.
+- Saving twitter hashtags
 
 # External data source
-Twitter API
+I'm using the twitter-stream-api to get the data flow going.
+[twitter-stream-api](https://www.npmjs.com/package/twitter-stream-api)
+
+Server-side:
+```
+io.on('connection', function(socket) {
+  console.log( 'connection socket' )
+  socket.on('search', function(data) {
+    console.log(data)
+    var trackedData = data
+    Twitter.stream('statuses/filter', {
+          track: trackedData,
+          stall_warnings: true
+      })
+    })
+})
+```
+
+Client-side:
+```
+(function (){
+    var socket = io()
+
+    var app = {
+
+        search: function() {
+            const input = document.getElementsByName('hashtag')[0]
+            const button = document.getElementsByName('button')[0]
+
+            input.addEventListener('keyup', function() {
+                const userValue = this.value
+            })
+
+            button.addEventListener('click', function() {
+                const userValue = input.value
+                socket.emit('search',userValue)
+            })
+        }
+    }
+
+    app.search()
+
+})();
+```
 
 # Database system
+I'm using [mongoDB](https://www.mongodb.com/) to save user data.
 
 # Checklist
-- [ ] researching graphQL
+`This` contains what I've done for this project and what I still have to do.
+- [x] MongoDB set-up
+- [x] Schema set-up
+- [x] Register
+- [x] Connection with the twitter-stream-api
+- [x] User input connects with the twitter-stream-api
+- [ ] Saving data in an array
+ filter it out
+- [ ] show the tweets on screen.
+
 
 # License
 

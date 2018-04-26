@@ -38,7 +38,8 @@ Twitter.on('connection success', function (uri) {
     console.log('connection success', uri);
 });
 
-Twitter.on('connection aborted', function () {
+Twitter.on('connection aborted', function (err) {
+  console.log(err)
     console.log('connection aborted');
 });
 
@@ -155,6 +156,7 @@ server.listen(3000, () => console.log('Listening on 3000.'))
 io.on('connection', function(socket) {
   console.log( 'connection socket' )
   socket.on('search', function(data) {
+    console.log(data)
     var trackedData = data
     Twitter.stream('statuses/filter', {
           track: trackedData,
@@ -163,16 +165,16 @@ io.on('connection', function(socket) {
 
     })
 
-    Twitter.on('data', function (obj) {
-        // console.log(obj)
-        const cleanedData = {
-          username: obj.screen_name,
-          profile_pic: obj.profile_image_url,
-          description: obj.text
-        }
-        // console.log(cleanedData)
-        console.log( 'run' )
-
-        socket.emit( 'data', cleanedData )
-    });
+    // Twitter.on('data', function (obj) {
+    //     // console.log(obj)
+    //     const cleanedData = {
+    //       username: obj.screen_name,
+    //       profile_pic: obj.profile_image_url,
+    //       description: obj.text
+    //     }
+    //     // console.log(cleanedData)
+    //     console.log( 'run' )
+    //
+    //     socket.emit( 'data', cleanedData )
+    // });
 })

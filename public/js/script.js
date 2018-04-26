@@ -18,11 +18,11 @@
         }
     }
 
-    socket.on( 'data', data => {
-
-      console.log( 'data', data )
-
-    } )
+    // socket.on('data', data => {
+    //
+    //   console.log('data', data )
+    //
+    // } )
 
     app.search()
 
