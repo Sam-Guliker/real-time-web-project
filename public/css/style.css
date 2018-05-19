@@ -20,10 +20,17 @@ label {
   display: block;
 }
 form {
-  max-width: 30em;
   display: flex;
   flex-direction: column;
-  margin: auto;
+  margin: 2em;
+}
+
+button {
+  padding: 2em;
+  background: #2e2e2e;
+  margin-top: 2em;
+  color: #fff;
+  border: none;
 }
 
 input {

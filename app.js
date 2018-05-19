@@ -21,7 +21,7 @@ db.once("open", function(callback) {
 
 const app                = require('express')()
 const server             = require('http').createServer(app)
-const io               = require('socket.io')(server)
+const io                 = require('socket.io')(server)
 
 
 var keys = {
@@ -47,16 +47,6 @@ Twitter.on('connection error network', function (error) {
     console.log('connection error network', error);
 });
 
-// Twitter.on('data', function (obj) {
-//     console.log(obj)
-//     const cleanedData = {
-//       username: obj.screen_name,
-//       profile_pic: obj.profile_image_url,
-//       description: obj.text
-//     }
-//     console.log(cleanedData)
-//
-// });
 
 Twitter.on('data error', function (error) {
     console.log('data error', error);
@@ -98,11 +88,6 @@ app.get('/', (req, res) => {
   res.render('login')
 })
 
-app.get('/login', (req, res) => {
-  res.status(200)
-  res.render('login')
-})
-
 app.get('/register', (req, res) => {
   res.status(200)
   res.render('register')
@@ -126,6 +111,7 @@ app.post('/register', (req, res) => {
       res.render('register')
     }
   })
+
 
   user.find({}, function(err, users) {
     if (err) throw err;
@@ -154,27 +140,21 @@ app.post('/login', (req, res) => {
 server.listen(3000, () => console.log('Listening on 3000.'))
 
 io.on('connection', function(socket) {
-  console.log( 'connection socket' )
   socket.on('search', function(data) {
-    console.log(data)
     var trackedData = data
     Twitter.stream('statuses/filter', {
           track: trackedData,
           stall_warnings: true
       })
+      Twitter.on('data', function (obj) {
+          console.log(obj)
+          var cleanedData = {
+            id: obj.id,
+            username: obj.screen_name,
+            text: obj.text
+          }
+          console.log(cleanedData)
 
+      });
     })
-
-    // Twitter.on('data', function (obj) {
-    //     // console.log(obj)
-    //     const cleanedData = {
-    //       username: obj.screen_name,
-    //       profile_pic: obj.profile_image_url,
-    //       description: obj.text
-    //     }
-    //     // console.log(cleanedData)
-    //     console.log( 'run' )
-    //
-    //     socket.emit( 'data', cleanedData )
-    // });
 })
