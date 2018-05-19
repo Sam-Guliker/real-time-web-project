@@ -89,9 +89,6 @@ set-up:
 - [ ] show the tweets on screen.
 - [ ] adding ID's to sockets.
 
-
-# License
-
 <!-- Add a nice image here at the end of the week, showing off your shiny frontend 📸 -->
 
 <!-- Maybe a table of contents here? 📚 -->
