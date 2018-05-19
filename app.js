@@ -133,13 +133,12 @@ app.post('/login', (req, res) => {
   //   if (err) console.log( err );
 
     // console.log(result)
-    res.render('finder')
+    res.redirect('/finder')
   // })
 })
 
-server.listen(3000, () => console.log('Listening on 3000.'))
-
 io.on('connection', function(socket) {
+  var dataArray = []
   socket.on('search', function(data) {
     var trackedData = data
     Twitter.stream('statuses/filter', {
@@ -147,14 +146,24 @@ io.on('connection', function(socket) {
           stall_warnings: true
       })
       Twitter.on('data', function (obj) {
-          console.log(obj)
           var cleanedData = {
             id: obj.id,
-            username: obj.screen_name,
-            text: obj.text
+            username: obj.user.screen_name,
+            afbeelding: obj.user.profile_image_url,
+            text: obj.text,
           }
-          console.log(cleanedData)
+          dataArray.push(cleanedData)
 
+          for (var i = 0; i < dataArray.length; i++) {
+            if(dataArray.length === 9){
+              console.log('Yaaaaoowww')
+              var dataContent = dataArray[i]
+              Twitter.close()
+              socket.send(dataContent)
+            }
+          }
       });
     })
-})
+ })
+
+server.listen(3000, () => console.log('Listening on 3000.'))

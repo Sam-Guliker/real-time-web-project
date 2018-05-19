@@ -13,8 +13,7 @@ div {
 
 }
 main {
-  margin: auto;
-  width: 40vw;
+  margin: 2em;
 }
 label {
   display: block;
@@ -25,12 +24,13 @@ form {
   margin: 2em;
 }
 
-button {
+.btn {
   padding: 2em;
   background: #2e2e2e;
   margin-top: 2em;
   color: #fff;
   border: none;
+  width: 100%;
 }
 
 input {
@@ -39,11 +39,8 @@ input {
 
 input[name="hashtag"] {
   width: 100%;
-  /* background: #2e2e2e; */
-  color: #2e2e2e;
   padding: 2em;
   border: 1px solid black;
-  border-radius: 3em;
 }
 
 label {
@@ -51,7 +48,5 @@ label {
 }
 input[type="submit"] {
   margin-top: 1em;
-  color: #2e2e2e;
-  margin-left: -65px;
   border: none;
 }
