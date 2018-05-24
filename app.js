@@ -147,8 +147,6 @@ app.post('/login', (req, res) => {
 })
 
 io.on('connection', function (socket) {
-	console.log('hi')
-
 	var trackedData;
 
 	socket.on('search', function (data) {
@@ -165,10 +163,10 @@ io.on('connection', function (socket) {
 		Twitter.on('data', function (obj) {
 			console.log('Got data', dataArray.length)
 
-			if (dataArray.length === 3) {
+			if (dataArray.length === 10) {
 				console.log('Done');
 
-				socket.emit('load_more', dataArray)
+				socket.emit('create', dataArray)
 				Twitter.close() // Stop the function from running any further
 				return // 
 			}
@@ -191,7 +189,7 @@ io.on('connection', function (socket) {
 			}
 		})
 
-
+    socket.emit(dataArray)
 	});
 
 	socket.on('load_more', function (data) {
@@ -206,7 +204,7 @@ io.on('connection', function (socket) {
 		Twitter.on('data', function (obj) {
 			console.log('Got data', dataArray.length)
 
-			if (dataArray.length === 3) {
+			if (dataArray.length === 10) {
 				console.log('Done');
 
 				Twitter.close() // Stop the function from running any further
@@ -236,13 +234,5 @@ io.on('connection', function (socket) {
 
 	});
 })
-
-
-
-// var names = ["Mike","Matt","Nancy","Adam","Jenny","Nancy","Carl"];
-// var uniqueNames = [];
-// $.each(names, function(i, el){
-//     if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
-// });
 
 server.listen(3001, () => console.log('Listening on 3001.'))
