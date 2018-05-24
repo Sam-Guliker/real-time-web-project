@@ -1,55 +1,54 @@
-const express          = require('express')
-const path             = require('path')
-const bodyParser       = require('body-parser')
-const pug              = require('pug')
-const fs               = require('fs')
-const TwitterStream    = require('twitter-stream-api')
+const express = require('express')
+const path = require('path')
+const bodyParser = require('body-parser')
+const pug = require('pug')
+const fs = require('fs')
+const TwitterStream = require('twitter-stream-api')
 // const session          = require('express-session')
-const mongoose         = require('mongoose')
-const env              = require('dotenv').config()
+const mongoose = require('mongoose')
+const env = require('dotenv').config()
 
-const user             = require('./modal/user')
+const user = require('./modal/user')
 // const example          = require('./example-tweet')
 
 mongoose.connect('mongodb://localhost/test')
 const db = mongoose.connection
 
 db.on("error", console.error.bind(console, "connection error"));
-db.once("open", function(callback) {
-  console.log("Connection succeeded.");
+db.once("open", function (callback) {
+	console.log("Connection succeeded.");
 });
 
-const app                = require('express')()
-const server             = require('http').createServer(app)
-const io                 = require('socket.io')(server)
+const app = require('express')()
+const server = require('http').createServer(app)
+const io = require('socket.io')(server)
 
 
 var keys = {
-    consumer_key :    process.env.consumer_key,
-    consumer_secret : process.env.consumer_secret,
-    token :           process.env.token,
-    token_secret :    process.env.token_secret
+	consumer_key: process.env.consumer_key,
+	consumer_secret: process.env.consumer_secret,
+	token: process.env.token,
+	token_secret: process.env.token_secret
 };
 
 var Twitter = new TwitterStream(keys, true);
 
 
 Twitter.on('connection success', function (uri) {
-    console.log('connection success', uri);
+	console.log('connection success', uri);
 });
 
 Twitter.on('connection aborted', function (err) {
-  console.log(err)
-    console.log('connection aborted');
+	console.log('connection aborted');
 });
 
 Twitter.on('connection error network', function (error) {
-    console.log('connection error network', error);
+	console.log('connection error network', error);
 });
 
 
 Twitter.on('data error', function (error) {
-    console.log('data error', error);
+	console.log('data error', error);
 });
 
 app.set('views', path.join(__dirname, 'views'));
@@ -57,7 +56,7 @@ app.set('view engine', 'pug');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
-  extended: true
+	extended: true
 }))
 
 // app.use(express.session({
@@ -68,102 +67,182 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(function(err, req, res, next) {
-   res.status(err.status || 500);
-   res.end();
+app.use(function (err, req, res, next) {
+	res.status(err.status || 500);
+	res.end();
 });
 
-app.get( '*', function(req, res, next) {
-    if (req.url === '/favicon.ico') {
-        res.writeHead(200, {'Content-Type': 'image/x-icon'} );
-        res.end(/* icon content here */);
-    } else {
-        next();
-    }
-} )
+app.use(function (req, res, next) {
+	console.log(req.url)
+	if (req.url === '/favicon.ico') {
+		res.writeHead(200, { 'Content-Type': 'image/x-icon' });
+		res.end()
+	} else {
+		next();
+	}
+})
+
+// app.get( '*', function(req, res, next) {
+//     if (req.url === '/favicon.ico') {
+//         res.writeHead(200, {'Content-Type': 'image/x-icon'} );
+//         res.end(/* icon content here */);
+//     } else {
+//         next();
+//     }
+// } )
 
 // App gets.
 app.get('/', (req, res) => {
-  res.status(200)
-  res.render('login')
+	res.status(200)
+	res.render('login')
 })
 
 app.get('/register', (req, res) => {
-  res.status(200)
-  res.render('register')
+	res.status(200)
+	res.render('register')
 })
 
 app.get('/finder', (req, res) => {
-  title='Hashtagfinder'
-  res.status(200)
-  res.render('finder')
+	title = 'Hashtagfinder'
+	// res.status(200)
+	res.render('finder')
 })
 
 // App post.
 app.post('/register', (req, res) => {
-  const newUser = new user(req.body)
-  console.log(newUser)
+	const newUser = new user(req.body)
+	console.log(newUser)
 
-  newUser.save(function(err, newUser){
-    if (err) throw err;
-    else{
-      console.log('User created!');
-      res.render('register')
-    }
-  })
+	newUser.save(function (err, newUser) {
+		if (err) throw err;
+		else {
+			console.log('User created!');
+			res.render('register')
+		}
+	})
 
 
-  user.find({}, function(err, users) {
-    if (err) throw err;
+	user.find({}, function (err, users) {
+		if (err) throw err;
 
-    // object of all the users
-    console.log(users);
-  });
-  res.redirect('login')
+		// object of all the users
+		console.log(users);
+	});
+	res.redirect('login')
 })
 
 app.post('/login', (req, res) => {
-  title='hashFinder'
-  // user.findOne({
-  //       username: req.body.username,
-  //       password: req.body.password
-  //   },
-  //
-  //   (err, result) => {
-  //   if (err) console.log( err );
+	title = 'hashFinder'
+	// user.findOne({
+	//       username: req.body.username,
+	//       password: req.body.password
+	//   },
+	//
+	//   (err, result) => {
+	//   if (err) console.log( err );
 
-    // console.log(result)
-    res.redirect('/finder')
-  // })
+	// console.log(result)
+	res.redirect('/finder')
+	// })
 })
 
-io.on('connection', function(socket) {
-  var dataArray = []
-  socket.on('search', function(data) {
-    var trackedData = data
-    Twitter.stream('statuses/filter', {
-          track: trackedData,
-          stall_warnings: true
-      })
-      Twitter.on('data', function (obj) {
-          var cleanedData = {
-            id: obj.id,
-            username: obj.user.screen_name,
-            afbeelding: obj.user.profile_image_url,
-            text: obj.text,
-          }
-          dataArray.push(cleanedData)
+io.on('connection', function (socket) {
+	console.log('hi')
 
-          for (var i = 0; i < dataArray.length; i++) {
-            if(dataArray.length === 9){
-              console.log('Yaaaaoowww')
-              var dataContent = dataArray[i]
-              Twitter.close()
-              socket.send(dataContent)
-            }
-          }
-      });
-    })
- })
+	var trackedData;
 
-server.listen(3000, () => console.log('Listening on 3000.'))
+	socket.on('search', function (data) {
+		console.log('On search');
+		var dataArray = []
+
+		trackedData = data;
+
+		Twitter.stream('statuses/filter', {
+			track: trackedData,
+			stall_warnings: true
+		})
+
+		Twitter.on('data', function (obj) {
+			console.log('Got data', dataArray.length)
+
+			if (dataArray.length === 3) {
+				console.log('Done');
+
+				socket.emit('load_more', dataArray)
+				Twitter.close() // Stop the function from running any further
+				return // 
+			}
+
+			var cleanedData = {
+				id: obj.id,
+				username: obj.user.screen_name,
+				afbeelding: obj.user.profile_image_url,
+				text: obj.text,
+			}
+
+			dataArray.push(cleanedData)
+
+			var filtered = dataArray.filter(function (item) {
+				return item.id === cleanedData;
+			})
+
+			if (filtered.length > 1) {
+				dataArray.pop();
+			}
+		})
+
+
+	});
+
+	socket.on('load_more', function (data) {
+		console.log('On load more');
+		var dataArray = []
+
+		Twitter.stream('statuses/filter', {
+			track: trackedData,
+			stall_warnings: true
+		})
+
+		Twitter.on('data', function (obj) {
+			console.log('Got data', dataArray.length)
+
+			if (dataArray.length === 3) {
+				console.log('Done');
+
+				Twitter.close() // Stop the function from running any further
+				return // 
+			}
+
+			var cleanedData = {
+				id: obj.id,
+				username: obj.user.screen_name,
+				afbeelding: obj.user.profile_image_url,
+				text: obj.text,
+			}
+
+			dataArray.push(cleanedData)
+
+			var filtered = dataArray.filter(function (item) {
+				return item.id === cleanedData;
+			})
+
+			if (filtered.length > 1) {
+				dataArray.pop();
+			}
+
+
+		})
+
+
+	});
+})
+
+
+
+// var names = ["Mike","Matt","Nancy","Adam","Jenny","Nancy","Carl"];
+// var uniqueNames = [];
+// $.each(names, function(i, el){
+//     if($.inArray(el, uniqueNames) === -1) uniqueNames.push(el);
+// });
+
+server.listen(3001, () => console.log('Listening on 3001.'))
