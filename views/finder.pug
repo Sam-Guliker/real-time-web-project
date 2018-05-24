@@ -1,9 +1,13 @@
 extend layout
 
 block content
-  h1= title
-  label(for='hashtagfinder') hashtagFinder:
-  input(type='text', placeholder='yourhashtag' name='hashtag')
-      
-
-    
+  main
+    h1= title
+    label(for='hashtagfinder') Type in your hashtag:
+    div
+    input(type='text', placeholder='yourhashtag' name='hashtag')
+    input(class='btn' type='submit' value='send' name='button')
+    button(class='btn') load more
+  
+  script(src="js/socket.js")
+  script(src='js/script.js')

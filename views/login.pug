@@ -1,12 +1,13 @@
 extend layout
 
 block content
-  h1= title
-  a(href='register') Register now
-  form(method='POST' action='/login')
-    label(for='username') Username:
-    input(type='text', placeholder='username' name='username')
-    label(for='password') Password:
-    input(type='text', placeholder='*******' name='password')
-    button(type='submit') Login
+  main
+    h1= title
+    a(href='register') Register now
+    form(method='POST' action='/login')
+      label(for='username') Username:
+      input(type='text', placeholder='username' name='username')
+      label(for='password') Password:
+      input(type='text', placeholder='*******' name='password')
+      button(class='btn' type='submit') Login
     
