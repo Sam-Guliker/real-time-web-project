@@ -12,8 +12,8 @@ New twitter posts will be send realtime to the client.
 * [Features](#features)
 * [Used technology](#used-technology)
 * [External datasource](#external-data-source)
-<!-- * [Database](#database-system) -->
 * [Checklist](#checklist)
+* [Wishlist](#wishlist)
 * [License](#license)
 
 # Getting Started
@@ -156,9 +156,9 @@ Things I wish to add :eyes:
 
 - [x] MongoDB set-up
 - [x] Schema set-up
-- [  ] Save favorite tweets
-- [  ] Register
-- [  ] Load more button that connects with the socket.
+- [ ] Save favorite tweets
+- [ ] Register
+- [ ] Load more button that connects with the socket.
 
 # Lisence
 Copyright © 2018 Sam Guliker.  
