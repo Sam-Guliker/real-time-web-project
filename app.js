@@ -192,4 +192,4 @@ io.on("connection", function(socket) {
   });
 });
 
-server.listen(3001, () => console.log("Listening on 3001."));
+server.listen(process.env.port, () => console.log("Listening on 3001."));
