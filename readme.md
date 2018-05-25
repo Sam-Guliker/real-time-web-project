@@ -1,106 +1,161 @@
 # Real-time-web-project
+
 The `#`finder. With this app you can search on hashtags.  
-New twitter posts will be send realtime to the client.  
+New twitter posts will be send realtime to the client.
 
 # Table of Content
-- [Getting started](#getting-started)
-- [Features](#features)
-- [Used technology](#used-technology)
-- [External datasource](#external-data-source)
-- [Database](#database-system)
-- [Checklist](#checklist)
-- [License](#license)
 
+* [Getting started](#getting-started)
+* [Features](#features)
+* [Used technology](#used-technology)
+* [External datasource](#external-data-source)
+<!-- * [Database](#database-system) -->
+* [Checklist](#checklist)
+* [License](#license)
 
 # Getting Started
+
 How to get started with this project:
 
-1. Clone the repo with `git clone https://github.com/Sam-Guliker/real-time-web-project` or download it from github
-2. Run `npm install` or `yarn` to install the dependencies
-3. Run `npm start` to start the server
-4. Go to [http://localhost:3000/](http://localhost:3000/)
+1.  Clone the repo with `git clone https://github.com/Sam-Guliker/real-time-web-project` or download it from github
+2.  Run `npm install` or `yarn` to install the dependencies
+3.  Run `npm start` to start the server
+4.  Go to [http://localhost:3000/](http://localhost:3000/)
 
 # Features
-The following is possible with this application:
-- Register as an user
-- Searching for tweets that got some kind of hashtag in it.
-- Saving twitter hashtags
+
+You can search on hashtags , and you'll get tweets in!
 
 # External data source
+
 I'm using the twitter-stream-api to get the data flow going.
 [twitter-stream-api](https://www.npmjs.com/package/twitter-stream-api)
 
 Server-side:
+
 ```
-io.on('connection', function(socket) {
-  socket.on('search', function(data) {
-    var trackedData = data
-    Twitter.stream('statuses/filter', {
-          track: trackedData,
-          stall_warnings: true
-      })
-    })
-})
+io.on("connection", function(socket) {
+  var trackedData;
+
+  socket.on("search", function(data) {
+    console.log("On search");
+    var dataArray = [];
+
+    trackedData = data;
+
+    Twitter.stream("statuses/filter", {
+      track: trackedData,
+      stall_warnings: true
+    });
+
+    Twitter.on("data", function(obj) {
+      console.log("Got data", dataArray.length);
+
+      var cleanedData = {
+        id: obj.id,
+        username: obj.user.screen_name,
+        afbeelding: obj.user.profile_image_url,
+        text: obj.text
+      };
+
+      dataArray.push(cleanedData);
+
+      socket.emit("create", dataArray[dataArray.length - 1]);
+
+      var filtered = dataArray.filter(function(item) {
+        return item.id === cleanedData;
+      });
+
+      if (filtered.length > 1) {
+        dataArray.pop();
+      }
+
+      if (dataArray.length === 10) {
+        console.log("Done");
+        Twitter.close(); // Stop the function from running any further
+        return; //
+      }
+    });
+
+    socket.emit(dataArray);
+  });
+});
 ```
 
 Client-side:
+
 ```
-(function (){
-    var socket = io()
+(function() {
+  var socket = io();
 
-    var app = {
+  var app = {
+    search: function() {
+      const input = document.getElementsByName("hashtag")[0];
+      const button = document.getElementsByName("button")[0];
+      console.log(button);
 
-        search: function() {
-            const input = document.getElementsByName('hashtag')[0]
-            const button = document.getElementsByName('button')[0]
+      input.addEventListener("keyup", function() {
+        const userValue = this.value;
+      });
 
-            input.addEventListener('keyup', function() {
-                const userValue = this.value
-            })
+      button.addEventListener("click", function() {
+        const userValue = input.value;
+        socket.emit("search", userValue);
+      });
+    },
+    create: function(cleanedData) {
+      const main = document.querySelector("main");
 
-            button.addEventListener('click', function() {
-                const userValue = input.value
-                socket.emit('search',userValue)
-            })
-        }
+      const article = document.createElement("article");
+      const section = document.createElement("section");
+      const h2 = document.createElement("h2");
+      const p = document.createElement("p");
+      const img = document.createElement("img");
+
+      main.append(article);
+      article.append(section);
+      section.append(h2);
+      section.append(img);
+      article.append(p);
+
+      h2.textContent = cleanedData.username;
+      img.src = cleanedData.afbeelding;
+      p.textContent = cleanedData.text;
     }
+  };
 
-    app.search()
-
+  socket.on("search", function(data) {});
+  socket.on("create", app.create);
+  app.search();
 })();
 ```
 
+<!--
 # Database system
+
 I'm using [mongoDB](https://www.mongodb.com/) to save user data.
 
 set-up:
 
-![schema](schema.png)
+![schema](schema.png) -->
 
 # Checklist
+
 `This` contains what I've done for this project and what I still have to do.
-- [x] MongoDB set-up
-- [x] Schema set-up
-- [x] Register
+
 - [x] Connection with the twitter-stream-api
 - [x] User input connects with the twitter-stream-api
-- [ ] Saving data in an array
- filter it out
-- [ ] show the tweets on screen.
-- [ ] adding ID's to sockets.
+- [x] Creates elements for the user
 
-<!-- Add a nice image here at the end of the week, showing off your shiny frontend 📸 -->
+# Wish list
+Things I wish to add :eyes:
 
-<!-- Maybe a table of contents here? 📚 -->
+- [x] MongoDB set-up
+- [x] Schema set-up
+- [  ] Save favorite tweets
+- [  ] Register
+- [  ] Load more button that connects with the socket.
 
-<!-- How about a section that describes how to install this project? 🤓 -->
-
-<!-- ...but how does one use this project? What are its features 🤔 -->
-
-<!-- What external data source is featured in your project and what are its properties 🌠 -->
-
-<!-- Where do the 0️⃣s and 1️⃣s live in your project? What db system are you using?-->
-
-<!-- Maybe a checklist of done stuff and stuff still on your wishlist? ✅ -->
-
-<!-- How about a license here? 📜 (or is it a licence?) 🤷 -->
+# Lisence
+Copyright © 2018 Sam Guliker.  
+Released under the [MIT license](https://opensource.org/licenses/MIT)
