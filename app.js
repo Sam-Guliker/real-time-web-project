@@ -24,8 +24,6 @@ const app = require("express")();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
-app.use(favicon(__dirname + "/public/img/favicon.ico"));
-
 var keys = {
   consumer_key: process.env.consumer_key,
   consumer_secret: process.env.consumer_secret,
@@ -54,7 +52,7 @@ Twitter.on("data error", function(error) {
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
-app.use(favicon(__dirname + "/public/img/favicon.ico"));
+app.use(favicon(path.join(__dirname, "public", "favicon.ico")));
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
