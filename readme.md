@@ -3,7 +3,7 @@
 The `#`finder. With this app you can search on hashtags.  
 New twitter posts will be send realtime to the client.
 
-[The App](https://hashtagfind.herokuapp.com/)
+[The App](https://hashtagfind.herokuapp.com/)  
 ![preview](hashtagfinder.gif)
 
 # Table of Content
@@ -151,7 +151,7 @@ set-up:
 - [x] Creates elements for the user
 - [ ] What happens when beeing offline
 
-# Wish list
+# Wishlist
 Things I wish to add :eyes:
 
 - [x] MongoDB set-up
