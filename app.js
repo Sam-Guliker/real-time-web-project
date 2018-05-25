@@ -24,7 +24,8 @@ const app = require("express")();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
-app.use(favicon(__dirname + "/public/images/favicon.ico"));
+app.use(favicon(__dirname + "/public/img/favicon.ico"));
+
 var keys = {
   consumer_key: process.env.consumer_key,
   consumer_secret: process.env.consumer_secret,
