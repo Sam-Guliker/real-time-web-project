@@ -6,7 +6,7 @@ const fs = require("fs");
 const TwitterStream = require("twitter-stream-api");
 // const session          = require('express-session')
 // const mongoose = require("mongoose");
-// const env = require("dotenv").config();
+const env = require("dotenv").config();
 
 // const user = require("./modal/user");
 // // const example          = require('./example-tweet')
