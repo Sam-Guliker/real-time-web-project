@@ -10,7 +10,7 @@ New twitter posts will be send realtime to the client.
 
 * [Getting started](#getting-started)
 * [Features](#features)
-* [Used technology](#used-technology)
+* [Data life cycle](#data-life-cycle)
 * [External datasource](#external-data-source)
 * [Checklist](#checklist)
 * [Wishlist](#wishlist)
@@ -28,6 +28,9 @@ How to get started with this project:
 # Features
 
 You can search on hashtags , and you'll get tweets in!
+
+# Data life cycle 
+![life cycle](datalifecycle.jpg)
 
 # External data source
 
