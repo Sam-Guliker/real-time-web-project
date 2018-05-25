@@ -152,7 +152,7 @@ set-up:
 - [x] Connection with the twitter-stream-api
 - [x] User input connects with the twitter-stream-api
 - [x] Creates elements for the user
-- [ ] What happens when beeing offline
+- [ ] What happens when being offline
 
 # Wishlist
 Things I wish to add :eyes:
