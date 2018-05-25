@@ -92,8 +92,9 @@ app.use(function(req, res, next) {
 
 // App gets.
 app.get("/", (req, res) => {
-  res.status(200);
-  res.render("login");
+  //   res.status(200);
+  //   res.render("login");
+  res.redirect("finder");
 });
 
 app.get("/register", (req, res) => {
