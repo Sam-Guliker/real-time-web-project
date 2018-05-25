@@ -23,7 +23,7 @@ How to get started with this project:
 1.  Clone the repo with `git clone https://github.com/Sam-Guliker/real-time-web-project` or download it from github
 2.  Run `npm install` or `yarn` to install the dependencies
 3.  Run `npm start` to start the server
-4.  Go to [http://localhost:3000/](http://localhost:3000/)
+4.  Go to [http://localhost:3001/](http://localhost:3001/)
 
 # Features
 
