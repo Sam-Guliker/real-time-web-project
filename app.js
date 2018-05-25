@@ -3,6 +3,7 @@ const path = require("path");
 const bodyParser = require("body-parser");
 const pug = require("pug");
 const fs = require("fs");
+const favicon = require("serve-favicon");
 const TwitterStream = require("twitter-stream-api");
 // const session          = require('express-session')
 // const mongoose = require("mongoose");
@@ -23,6 +24,7 @@ const app = require("express")();
 const server = require("http").createServer(app);
 const io = require("socket.io")(server);
 
+app.use(favicon(__dirname + "/public/images/favicon.ico"));
 var keys = {
   consumer_key: process.env.consumer_key,
   consumer_secret: process.env.consumer_secret,
@@ -51,6 +53,7 @@ Twitter.on("data error", function(error) {
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "pug");
 
+app.use(favicon(__dirname + "/public/images/favicon.ico"));
 app.use(bodyParser.json());
 app.use(
   bodyParser.urlencoded({
