@@ -4,6 +4,7 @@ The `#`finder. With this app you can search on hashtags.
 New twitter posts will be send realtime to the client.
 
 [The App](https://hashtagfind.herokuapp.com/)
+![preview](hashtagfinder.gif)
 
 # Table of Content
 
